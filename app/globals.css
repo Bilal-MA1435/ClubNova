@@ -1,0 +1,117 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-canvas: 247 249 252;
+  --color-panel: 255 255 255;
+  --color-panel-alt: 241 245 249;
+  --color-line: 203 213 225;
+  --color-text: 15 23 42;
+  --color-muted: 71 85 105;
+  --color-brand: 15 118 110;
+  --color-brand-strong: 17 94 89;
+  --color-brand-soft: 204 251 241;
+  --color-accent: 180 83 9;
+  --color-accent-soft: 254 243 199;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(15, 118, 110, 0.10), transparent 28%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(247, 249, 252, 1));
+}
+
+::selection {
+  background: rgba(15, 118, 110, 0.16);
+}
+
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-display tracking-tight text-slate-950;
+  }
+
+  h1 {
+    @apply text-4xl font-semibold leading-tight md:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl font-semibold leading-tight md:text-4xl;
+  }
+
+  h3 {
+    @apply text-xl font-semibold leading-snug md:text-2xl;
+  }
+
+  p {
+    @apply text-base leading-7 text-muted;
+  }
+
+  a {
+    @apply transition-colors duration-200 ease-emphasis;
+  }
+}
+
+@layer components {
+  .shell {
+    @apply mx-auto w-full max-w-content px-5 md:px-8;
+  }
+
+  .surface {
+    @apply rounded-lg border border-line/60 bg-panel shadow-card;
+  }
+
+  .surface-subtle {
+    @apply rounded-lg border border-line/50 bg-panelAlt/65;
+  }
+
+  .btn {
+    @apply inline-flex items-center justify-center rounded-md px-5 py-3 text-sm font-semibold transition-all duration-200 ease-emphasis focus-visible:outline-none focus-visible:shadow-focus disabled:cursor-not-allowed disabled:opacity-60;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand text-white hover:bg-brand-strong;
+  }
+
+  .btn-secondary {
+    @apply btn border border-line bg-panel text-slate-900 hover:-translate-y-0.5 hover:border-brand/30;
+  }
+
+  .section-copy {
+    @apply max-w-2xl space-y-4;
+  }
+
+  .eyebrow {
+    @apply text-sm font-semibold uppercase tracking-[0.18em] text-brand;
+  }
+
+  .grid-auto {
+    @apply grid gap-6 md:grid-cols-2 xl:grid-cols-4;
+  }
+
+  .stagger-item {
+    opacity: 0;
+    transform: translateY(14px);
+    animation: fade-up 620ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  }
+}
+
+@keyframes fade-up {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
