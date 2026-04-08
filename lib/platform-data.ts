@@ -1,4 +1,5 @@
 import type { Challenge, Submission, User } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 
 export const featuredProjects = [
@@ -221,19 +222,39 @@ type SubmissionInput = {
 };
 
 export async function createSubmission(input: SubmissionInput) {
-  const score = Math.max(120, 160 + Math.floor(Math.random() * 120));
-
-  return db.submission.create({
-    data: {
-      challengeId: input.challengeId,
-      userId: input.userId,
-      githubUrl: input.githubUrl,
-      liveUrl: input.liveUrl,
-      score,
-      status: "Reviewed",
-      feedback: "Accepted into the review queue and scored for demo presentation."
+  const challenge = await db.challenge.findUnique({
+    where: {
+      id: input.challengeId
     }
   });
+
+  if (!challenge || challenge.status !== "Open") {
+    throw new Error("Challenge is not available for submissions.");
+  }
+
+  const githubUrl = normalizeUrl(input.githubUrl);
+  const liveUrl = normalizeUrl(input.liveUrl);
+  const score = Math.max(120, 160 + Math.floor(Math.random() * 120));
+
+  try {
+    return await db.submission.create({
+      data: {
+        challengeId: input.challengeId,
+        userId: input.userId,
+        githubUrl,
+        liveUrl,
+        score,
+        status: "Reviewed",
+        feedback: "Accepted into the review queue and scored for demo presentation."
+      }
+    });
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+      throw new Error("Duplicate submission URL detected.");
+    }
+
+    throw error;
+  }
 }
 
 export function tagList(tags: string) {
@@ -245,3 +266,7 @@ export type ChallengeWithRelations = Challenge & {
 };
 
 export type LeaderboardEntry = Awaited<ReturnType<typeof getLeaderboard>>[number];
+
+function normalizeUrl(url: string) {
+  return url.trim().replace(/\/+$/, "");
+}

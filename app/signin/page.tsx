@@ -2,6 +2,11 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth, signIn } from "@/auth";
 import { ProviderButton } from "@/components/auth/provider-button";
+import { env } from "@/lib/env";
+
+const googleEnabled = env.googleEnabled;
+const githubEnabled = env.githubEnabled;
+const demoEnabled = env.demoAuthEnabled;
 
 async function signInWithProvider(formData: FormData) {
   "use server";
@@ -67,41 +72,46 @@ export default async function SignInPage() {
           </div>
 
           <div className="space-y-4">
-            <form action={signInWithProvider}>
-              <input type="hidden" name="provider" value="google" />
-              <ProviderButton label="Google" />
-            </form>
+            {googleEnabled ? (
+              <form action={signInWithProvider}>
+                <input type="hidden" name="provider" value="google" />
+                <ProviderButton label="Google" />
+              </form>
+            ) : null}
 
-            <form action={signInWithProvider}>
-              <input type="hidden" name="provider" value="github" />
-              <ProviderButton label="GitHub" />
-            </form>
+            {githubEnabled ? (
+              <form action={signInWithProvider}>
+                <input type="hidden" name="provider" value="github" />
+                <ProviderButton label="GitHub" />
+              </form>
+            ) : null}
           </div>
 
-          <div className="rounded-md border border-dashed border-line/70 p-4">
-            <p className="text-sm font-semibold text-slate-900">Submission-safe demo access</p>
-            <p className="mt-2 text-sm">
-              If OAuth keys are not configured yet, use the local demo accounts below so the protected routes still work
-              during review.
-            </p>
-            <div className="mt-4 grid gap-3 sm:grid-cols-2">
-              <form action={signInWithDemo}>
-                <input type="hidden" name="email" value="admin@clubhub.dev" />
-                <input type="hidden" name="password" value="clubhub-admin" />
-                <ProviderButton label="Demo Admin" />
-              </form>
-              <form action={signInWithDemo}>
-                <input type="hidden" name="email" value="member@clubhub.dev" />
-                <input type="hidden" name="password" value="clubhub-member" />
-                <ProviderButton label="Demo Member" />
-              </form>
+          {demoEnabled ? (
+            <div className="rounded-md border border-dashed border-line/70 p-4">
+              <p className="text-sm font-semibold text-slate-900">Demo access</p>
+              <p className="mt-2 text-sm">
+                Enabled for local review. Turn off `DEMO_AUTH_ENABLED` in production environments.
+              </p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <form action={signInWithDemo}>
+                  <input type="hidden" name="email" value="admin@clubhub.dev" />
+                  <input type="hidden" name="password" value="clubhub-admin" />
+                  <ProviderButton label="Demo Admin" />
+                </form>
+                <form action={signInWithDemo}>
+                  <input type="hidden" name="email" value="member@clubhub.dev" />
+                  <input type="hidden" name="password" value="clubhub-member" />
+                  <ProviderButton label="Demo Member" />
+                </form>
+              </div>
             </div>
-          </div>
+          ) : null}
 
           <div className="rounded-md border border-line/70 bg-panelAlt/70 p-4">
             <p className="text-sm">
               After sign-in, every user gets a database-backed record with role, onboarding state, and profile flags.
-              Google and GitHub are production providers. Demo access exists so local review works immediately.
+              OAuth providers are the production path. Demo access is intended for local review only.
             </p>
           </div>
 

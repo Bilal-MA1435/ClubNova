@@ -11,7 +11,7 @@ export function SiteHeader() {
           </div>
           <div>
             <div className="font-display text-lg font-semibold text-slate-950">Club Hub</div>
-            <p className="text-sm leading-5 text-muted">Developer club ecosystem platform</p>
+            <p className="text-sm leading-5 text-muted">Club workspace</p>
           </div>
         </Link>
 
@@ -28,12 +28,12 @@ export function SiteHeader() {
         </nav>
 
         <div className="flex items-center gap-3">
-          <a href="#platform" className="btn-secondary hidden sm:inline-flex">
-            Explore platform
-          </a>
-          <a href="#auth" className="btn-primary">
-            Member sign in
-          </a>
+          <Link href="/challenges" className="btn-secondary hidden sm:inline-flex">
+            Open challenges
+          </Link>
+          <Link href="/signin" className="btn-primary">
+            Sign in
+          </Link>
         </div>
       </div>
     </header>

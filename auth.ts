@@ -5,27 +5,35 @@ import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 import { db } from "@/lib/db";
 import { authConfig } from "@/lib/auth.config";
+import { env } from "@/lib/env";
 
 const demoAdminEmail = process.env.DEMO_ADMIN_EMAIL ?? "admin@clubhub.dev";
 const demoAdminPassword = process.env.DEMO_ADMIN_PASSWORD ?? "clubhub-admin";
 const demoMemberEmail = process.env.DEMO_MEMBER_EMAIL ?? "member@clubhub.dev";
 const demoMemberPassword = process.env.DEMO_MEMBER_PASSWORD ?? "clubhub-member";
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  ...authConfig,
-  adapter: PrismaAdapter(db),
-  session: {
-    strategy: "jwt"
-  },
-  providers: [
+const providers = [];
+
+if (env.googleEnabled) {
+  providers.push(
     Google({
       clientId: process.env.AUTH_GOOGLE_ID,
       clientSecret: process.env.AUTH_GOOGLE_SECRET
-    }),
+    })
+  );
+}
+
+if (env.githubEnabled) {
+  providers.push(
     GitHub({
       clientId: process.env.AUTH_GITHUB_ID,
       clientSecret: process.env.AUTH_GITHUB_SECRET
-    }),
+    })
+  );
+}
+
+if (env.demoAuthEnabled) {
+  providers.push(
     Credentials({
       name: "Demo Access",
       credentials: {
@@ -83,7 +91,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         return null;
       }
     })
-  ],
+  );
+}
+
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  ...authConfig,
+  adapter: PrismaAdapter(db),
+  session: {
+    strategy: "jwt"
+  },
+  providers,
   callbacks: {
     ...authConfig.callbacks,
     jwt({ token, user }) {

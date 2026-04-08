@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { HomeSection } from "@/components/home-section";
 import { SiteHeader } from "@/components/site-header";
@@ -31,12 +32,15 @@ export default function HomePage() {
             </div>
 
             <div className="stagger-item flex flex-wrap gap-4" style={{ animationDelay: "300ms" }}>
-              <a href="/signin" className="btn-primary">
+              <Link href="/signin" className="btn-primary">
                 Enter Club Hub
-              </a>
-              <a href="/challenges" className="btn-secondary">
+              </Link>
+              <Link href="/dashboard" className="btn-secondary">
+                Open dashboard
+              </Link>
+              <Link href="/challenges" className="btn-secondary">
                 View challenges
-              </a>
+              </Link>
             </div>
 
             <dl className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
@@ -56,8 +60,8 @@ export default function HomePage() {
           <aside className="surface p-6 md:p-8">
             <div className="flex items-center justify-between border-b border-line/70 pb-4">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.16em] text-brand">Start here</p>
-                <h2 className="mt-2 text-2xl">What you can do today</h2>
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-brand">Quick actions</p>
+              <h2 className="mt-2 text-2xl">Jump into the app</h2>
               </div>
               <span className="rounded-full bg-brand-soft px-3 py-1 text-xs font-semibold text-brand-strong">
                 live demo
@@ -65,22 +69,45 @@ export default function HomePage() {
             </div>
 
             <div className="mt-6 space-y-5">
-              {[
-                "Sign in with a member or admin demo account.",
-                "Browse open challenges and submit project links.",
-                "Check rankings, team members, and featured work."
-              ].map((item) => (
-                <div key={item} className="flex gap-3">
+              <Link href="/signin" className="flex items-center justify-between rounded-md border border-line/60 px-4 py-4 hover:border-brand/40">
+                <div className="flex gap-3">
                   <CheckCircle2 className="mt-1 h-5 w-5 text-brand" />
-                  <p className="text-slate-700">{item}</p>
+                  <div>
+                    <p className="font-medium text-slate-900">Sign in</p>
+                    <p className="text-sm text-slate-700">Member and admin access</p>
+                  </div>
                 </div>
-              ))}
+                <ArrowRight className="h-4 w-4 text-slate-500" />
+              </Link>
+              <Link href="/challenges" className="flex items-center justify-between rounded-md border border-line/60 px-4 py-4 hover:border-brand/40">
+                <div className="flex gap-3">
+                  <CheckCircle2 className="mt-1 h-5 w-5 text-brand" />
+                  <div>
+                    <p className="font-medium text-slate-900">Challenges</p>
+                    <p className="text-sm text-slate-700">Submit GitHub and live links</p>
+                  </div>
+                </div>
+                <ArrowRight className="h-4 w-4 text-slate-500" />
+              </Link>
+              <Link href="/leaderboard" className="flex items-center justify-between rounded-md border border-line/60 px-4 py-4 hover:border-brand/40">
+                <div className="flex gap-3">
+                  <CheckCircle2 className="mt-1 h-5 w-5 text-brand" />
+                  <div>
+                    <p className="font-medium text-slate-900">Leaderboard</p>
+                    <p className="text-sm text-slate-700">See top contributors</p>
+                  </div>
+                </div>
+                <ArrowRight className="h-4 w-4 text-slate-500" />
+              </Link>
             </div>
 
             <div className="mt-8 rounded-lg bg-slate-950 p-5 text-white">
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-teal-300">Quick access</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-teal-300">Demo accounts</p>
               <p className="mt-3 text-base leading-7 text-slate-200">
-                Use the sign-in page to enter the dashboard, or jump straight into the challenge board to see the core flow.
+                Admin: `admin@clubhub.dev` / `clubhub-admin`
+              </p>
+              <p className="mt-2 text-base leading-7 text-slate-200">
+                Member: `member@clubhub.dev` / `clubhub-member`
               </p>
             </div>
           </aside>
@@ -91,7 +118,7 @@ export default function HomePage() {
         id="platform"
         eyebrow="Platform"
         title="Everything your club needs in one place"
-        description="Move between member identity, submissions, projects, and admin tasks without switching tools."
+        description="Use the core areas of the app directly from here."
       >
         <div className="grid-auto">
           {pillars.map((pillar, index) => {
@@ -118,7 +145,7 @@ export default function HomePage() {
       <HomeSection
         eyebrow="How it works"
         title="Simple paths for members and organizers"
-        description="Every screen is focused on action: join, submit, review, track, and showcase."
+        description="Follow the main user flow from sign-in to submissions and rankings."
       >
         <div className="grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
           <div className="space-y-4">
@@ -165,7 +192,7 @@ export default function HomePage() {
         id="projects"
         eyebrow="Project showcase"
         title="Projects your community can explore"
-        description="Show featured builds, the stack behind them, and the people who made them happen."
+        description="Open project highlights and see who built them."
       >
         <div className="grid gap-6 lg:grid-cols-3">
           {sampleProjects.map((project) => (
@@ -190,7 +217,7 @@ export default function HomePage() {
         id="team"
         eyebrow="Team"
         title="Meet the people running the club"
-        description="Browse roles, responsibilities, and focus areas across the team."
+        description="See the people behind the club and what they handle."
       >
         <div className="grid gap-6 md:grid-cols-3">
           {teamPreview.map((person) => (
@@ -210,29 +237,29 @@ export default function HomePage() {
         </div>
       </HomeSection>
 
-      <section id="auth" className="border-t border-line/70 py-20 md:py-28">
+      <section className="border-t border-line/70 py-20 md:py-28">
         <div className="shell">
           <div className="surface grid gap-8 p-6 md:grid-cols-[1.1fr_0.9fr] md:p-8">
             <div className="space-y-4">
               <p className="eyebrow">Access</p>
-              <h2>Sign in and continue where you left off</h2>
+              <h2>Ready to use</h2>
               <p>
-                Use demo access now, or plug in Google and GitHub providers for full sign-in later.
+                Sign in, open challenges, view rankings, and move through the platform like a real user.
               </p>
             </div>
 
             <div className="rounded-lg bg-slate-950 p-6 text-white">
-              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-teal-300">What unlocks after sign-in</p>
+              <p className="text-sm font-semibold uppercase tracking-[0.16em] text-teal-300">Open next</p>
               <ul className="mt-4 space-y-3 text-sm leading-6 text-slate-200">
-                <li>Personal dashboard and challenge history</li>
-                <li>Leaderboard visibility and project activity</li>
-                <li>Protected member and admin routes</li>
-                <li>Role-based access across the platform</li>
+                <li>Dashboard</li>
+                <li>Challenges</li>
+                <li>Leaderboard</li>
+                <li>Admin overview</li>
               </ul>
-              <a href="/signin" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white">
+              <Link href="/signin" className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-white">
                 Go to sign in
                 <ArrowRight className="h-4 w-4" />
-              </a>
+              </Link>
             </div>
           </div>
         </div>

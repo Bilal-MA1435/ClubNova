@@ -8,11 +8,11 @@ import {
 } from "lucide-react";
 
 export const navigation = [
-  { label: "Platform", href: "#platform" },
-  { label: "Challenges", href: "#challenges" },
-  { label: "Projects", href: "#projects" },
-  { label: "Team", href: "#team" },
-  { label: "Admin", href: "#admin" }
+  { label: "Dashboard", href: "/dashboard" },
+  { label: "Challenges", href: "/challenges" },
+  { label: "Leaderboard", href: "/leaderboard" },
+  { label: "Projects", href: "/projects" },
+  { label: "Team", href: "/team" }
 ];
 
 export const stats = [
@@ -24,23 +24,23 @@ export const stats = [
 
 export const pillars = [
   {
-    title: "Member identity",
-    description: "Profiles, role-aware access, skill tags, performance history, and contribution records in one system.",
+    title: "Profiles",
+    description: "Member identity, roles, and activity in one place.",
     icon: Users
   },
   {
-    title: "Challenge operations",
-    description: "Submissions with GitHub and live links, scoring workflows, review pipelines, and leaderboard movement.",
+    title: "Challenges",
+    description: "Submit work, track scores, and move up the board.",
     icon: Trophy
   },
   {
-    title: "Project showcase",
-    description: "Curated product stories with documentation, technical stack, screenshots, and team ownership.",
+    title: "Projects",
+    description: "Browse featured builds, stack choices, and ownership.",
     icon: FolderKanban
   },
   {
-    title: "Department control",
-    description: "Announcements, analytics, moderation, audit visibility, and operational workflows for organizers.",
+    title: "Admin",
+    description: "See members, submissions, and club activity at a glance.",
     icon: ShieldCheck
   }
 ];
@@ -48,30 +48,30 @@ export const pillars = [
 export const workflows = [
   {
     step: "01",
-    title: "Clear roles and data boundaries",
-    description: "Visitors, members, organizers, and admins get predictable access rules and page states."
+    title: "Sign in",
+    description: "Open the dashboard with the right role and access."
   },
   {
     step: "02",
-    title: "Operational home for technical work",
-    description: "Events, challenges, reviews, and project showcases live in one architecture, not separate tools."
+    title: "Submit work",
+    description: "Send GitHub and live links for challenge review."
   },
   {
     step: "03",
-    title: "Live performance visibility",
-    description: "Leaderboards and member dashboards update from submission and participation data."
+    title: "Track progress",
+    description: "See leaderboard rank, review state, and activity."
   }
 ];
 
 export const previews = [
   {
-    title: "Challenge review queue",
-    description: "Pending submissions, review status, deadline windows, and score distribution per challenge.",
+    title: "Challenge queue",
+    description: "Open tasks, deadlines, and recent activity.",
     icon: Blocks
   },
   {
-    title: "Performance dashboard",
-    description: "Rank movement, participation streaks, and contribution analytics shaped for members and admins.",
+    title: "Dashboard",
+    description: "Your recent submissions, rank, and next actions.",
     icon: Activity
   }
 ];

@@ -7,11 +7,8 @@ export default function ProjectsPage() {
       <TopNav />
       <div className="space-y-3">
         <p className="eyebrow">Projects</p>
-        <h1 className="text-4xl md:text-5xl">Featured builds from the club.</h1>
-        <p className="max-w-2xl">
-          This seeded showcase gives you a polished project portfolio for the demo and establishes the structure for a
-          later database-backed project system.
-        </p>
+        <h1 className="text-4xl md:text-5xl">Project showcase</h1>
+        <p className="max-w-2xl">Browse featured work, stack choices, and team size.</p>
       </div>
 
       <section className="mt-10 grid gap-6 lg:grid-cols-3">

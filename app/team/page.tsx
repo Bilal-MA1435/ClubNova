@@ -7,10 +7,8 @@ export default function TeamPage() {
       <TopNav />
       <div className="space-y-3">
         <p className="eyebrow">Team</p>
-        <h1 className="text-4xl md:text-5xl">The people behind Club Hub.</h1>
-        <p className="max-w-2xl">
-          This page gives reviewers a concrete team system instead of a generic “about us” block.
-        </p>
+        <h1 className="text-4xl md:text-5xl">Team directory</h1>
+        <p className="max-w-2xl">See who is leading, building, and operating the club.</p>
       </div>
 
       <section className="mt-10 grid gap-6 md:grid-cols-2 xl:grid-cols-4">

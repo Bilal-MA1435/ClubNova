@@ -36,7 +36,11 @@ async function submitChallenge(formData: FormData) {
       githubUrl,
       liveUrl
     });
-  } catch {
+  } catch (error) {
+    if (error instanceof Error && error.message === "Challenge is not available for submissions.") {
+      redirect("/challenges?error=closed");
+    }
+
     redirect("/challenges?error=duplicate");
   }
 
@@ -90,7 +94,11 @@ export default async function ChallengesPage({
       ) : null}
       {error ? (
         <div className="mt-6 rounded-md border border-rose-200 bg-rose-50 px-4 py-3 text-sm text-rose-700">
-          {error === "duplicate" ? "Duplicate GitHub or live URL detected." : "Both links must be valid URLs."}
+          {error === "duplicate"
+            ? "Duplicate GitHub or live URL detected."
+            : error === "closed"
+              ? "This challenge is no longer accepting submissions."
+              : "Both links must be valid URLs."}
         </div>
       ) : null}
 
