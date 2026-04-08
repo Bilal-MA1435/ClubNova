@@ -8,7 +8,7 @@ Club Hub is a Next.js platform for technical clubs to manage members, challenges
 - Tailwind CSS
 - Auth.js
 - Prisma ORM
-- SQLite for local demo
+- PostgreSQL for production
 
 ## Local development
 
@@ -29,10 +29,10 @@ These are intended for local review and demo environments only.
 - Admin: `admin@clubhub.dev` / `clubhub-admin`
 - Member: `member@clubhub.dev` / `clubhub-member`
 
-Disable them in production by setting:
+Enable them only when needed:
 
 ```bash
-DEMO_AUTH_ENABLED="false"
+DEMO_AUTH_ENABLED="true"
 ```
 
 ## Required production environment variables
@@ -43,14 +43,16 @@ AUTH_GOOGLE_ID=""
 AUTH_GOOGLE_SECRET=""
 AUTH_GITHUB_ID=""
 AUTH_GITHUB_SECRET=""
-DATABASE_URL=""
+DATABASE_URL="postgresql://..."
+DIRECT_URL=""
 DEMO_AUTH_ENABLED="false"
 ```
 
 ## Production notes
 
-- Use a managed PostgreSQL database for production deployment.
-- Do not use the local SQLite file in serverless production environments.
+- Use a managed PostgreSQL database for deployment.
+- Use the pooled connection in `DATABASE_URL`.
+- If your provider gives a direct connection, add it to `DIRECT_URL` for Prisma CLI operations.
 - Keep demo auth disabled in production.
 - Configure real Google and GitHub OAuth credentials before launch.
 - Run `npm run build` before deployment to verify the app.

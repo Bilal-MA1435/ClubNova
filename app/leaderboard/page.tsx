@@ -1,6 +1,8 @@
 import { TopNav } from "@/components/top-nav";
 import { getLeaderboard, type LeaderboardEntry } from "@/lib/platform-data";
 
+export const dynamic = "force-dynamic";
+
 export default async function LeaderboardPage() {
   const leaderboard = await getLeaderboard();
 

@@ -12,6 +12,8 @@ import {
   type LeaderboardEntry
 } from "@/lib/platform-data";
 
+export const dynamic = "force-dynamic";
+
 async function submitChallenge(formData: FormData) {
   "use server";
 
