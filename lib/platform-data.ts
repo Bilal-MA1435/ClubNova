@@ -176,6 +176,43 @@ export async function getLeaderboard() {
     .sort((a, b) => b.score - a.score);
 }
 
+export async function getAdminOverview() {
+  await ensureDemoChallenges();
+
+  const [users, challenges, submissions, leaderboard] = await Promise.all([
+    db.user.findMany({
+      orderBy: {
+        createdAt: "asc"
+      }
+    }),
+    db.challenge.findMany({
+      include: {
+        submissions: true
+      },
+      orderBy: {
+        deadline: "asc"
+      }
+    }),
+    db.submission.findMany({
+      include: {
+        user: true,
+        challenge: true
+      },
+      orderBy: {
+        createdAt: "desc"
+      }
+    }),
+    getLeaderboard()
+  ]);
+
+  return {
+    users,
+    challenges,
+    submissions,
+    leaderboard
+  };
+}
+
 type SubmissionInput = {
   challengeId: string;
   userId: string;

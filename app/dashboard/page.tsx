@@ -2,13 +2,8 @@ import { redirect } from "next/navigation";
 import { Activity, FolderKanban, ShieldCheck, Trophy } from "lucide-react";
 import { auth, signOut } from "@/auth";
 import { SignOutButton } from "@/components/auth/sign-out-button";
-
-const metrics = [
-  { label: "Challenges joined", value: "12", icon: Trophy },
-  { label: "Projects tracked", value: "5", icon: FolderKanban },
-  { label: "Review completion", value: "84%", icon: Activity },
-  { label: "Access role", value: "Member", icon: ShieldCheck }
-];
+import { TopNav } from "@/components/top-nav";
+import { featuredProjects, getDashboardData, tagList } from "@/lib/platform-data";
 
 export default async function DashboardPage() {
   const session = await auth();
@@ -17,15 +12,28 @@ export default async function DashboardPage() {
     redirect("/signin");
   }
 
+  const data = await getDashboardData(session.user.id);
+  const metrics = [
+    { label: "Open challenges", value: String(data.challenges.length), icon: Trophy },
+    { label: "Projects tracked", value: String(featuredProjects.length), icon: FolderKanban },
+    {
+      label: "Review completion",
+      value: `${data.submissions.length ? Math.round((data.reviewedCount / data.submissions.length) * 100) : 0}%`,
+      icon: Activity
+    },
+    { label: "Current rank", value: `#${data.rank}`, icon: ShieldCheck }
+  ];
+
   return (
     <main className="shell py-12 md:py-16">
+      <TopNav />
       <div className="flex flex-wrap items-start justify-between gap-6">
         <div className="space-y-3">
           <p className="eyebrow">Dashboard</p>
           <h1 className="text-4xl md:text-5xl">Welcome back, {session.user.name ?? "member"}.</h1>
           <p className="max-w-2xl">
-            This protected route is now backed by Auth.js and Prisma. Next we can connect real analytics, submissions,
-            challenge history, and profile completion flows.
+            Your member space now reflects real submission history, challenge availability, and leaderboard position
+            from the local demo dataset.
           </p>
         </div>
 
@@ -48,7 +56,7 @@ export default async function DashboardPage() {
                 <Icon className="h-5 w-5" />
               </div>
               <p className="mt-5 text-sm font-medium">{metric.label}</p>
-              <h2 className="mt-2 text-3xl">{metric.label === "Access role" ? session.user.role : metric.value}</h2>
+              <h2 className="mt-2 text-3xl">{metric.value}</h2>
             </article>
           );
         })}
@@ -56,23 +64,90 @@ export default async function DashboardPage() {
 
       <section className="mt-10 grid gap-6 lg:grid-cols-[1.1fr_0.9fr]">
         <article className="surface p-6">
-          <h3>Auth-backed session data</h3>
-          <div className="mt-5 space-y-3 text-sm text-slate-700">
-            <p>User ID: {session.user.id}</p>
-            <p>Role: {session.user.role}</p>
-            <p>Profile completed: {session.user.profileCompleted ? "Yes" : "No"}</p>
-            <p>Onboarding status: {session.user.onboardingStatus}</p>
+          <div className="flex items-center justify-between gap-4">
+            <div>
+              <p className="eyebrow">Performance</p>
+              <h3 className="mt-2">Submission history</h3>
+            </div>
+            <div className="rounded-md bg-brand-soft px-4 py-2 text-sm font-semibold text-brand-strong">
+              {data.totalScore} pts total
+            </div>
+          </div>
+          <div className="mt-5 space-y-4">
+            {data.submissions.length > 0 ? (
+              data.submissions.map((submission) => (
+                <div key={submission.id} className="rounded-md border border-line/60 px-4 py-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div>
+                      <p className="font-semibold text-slate-900">{submission.challenge.title}</p>
+                      <p className="mt-1 text-sm">{submission.feedback ?? "Awaiting review."}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="font-display text-2xl font-semibold text-slate-950">{submission.score}</p>
+                      <p className="text-sm text-muted">{submission.status}</p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : (
+              <div className="rounded-md border border-dashed border-line/70 px-4 py-6 text-sm text-muted">
+                No submissions yet. Head to challenges and send one in.
+              </div>
+            )}
           </div>
         </article>
 
         <article className="surface p-6">
-          <h3>What comes next</h3>
-          <div className="mt-5 space-y-3">
-            <p>1. Add member profile models and profile settings forms.</p>
-            <p>2. Create challenge, submission, leaderboard, and project schemas.</p>
-            <p>3. Add server actions and realtime updates for leaderboard movement.</p>
+          <p className="eyebrow">Focus queue</p>
+          <h3 className="mt-2">Open challenge opportunities</h3>
+          <div className="mt-5 space-y-4">
+            {data.challenges.map((challenge) => (
+              <div key={challenge.id} className="rounded-md border border-line/60 px-4 py-4">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <p className="font-semibold text-slate-900">{challenge.title}</p>
+                    <p className="mt-1 text-sm">
+                      {challenge.category} • {challenge.difficulty}
+                    </p>
+                  </div>
+                  <div className="text-right">
+                    <p className="font-semibold text-slate-900">{challenge.points} pts</p>
+                    <p className="text-sm text-muted">{new Date(challenge.deadline).toLocaleDateString("en-IN")}</p>
+                  </div>
+                </div>
+                <div className="mt-3 flex flex-wrap gap-2">
+                  {tagList(challenge.tags).map((tag) => (
+                    <span key={tag} className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-700">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            ))}
           </div>
         </article>
+      </section>
+
+      <section className="mt-10 rounded-lg border border-line/70 bg-slate-950 px-6 py-8 text-white">
+        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-teal-300">Account state</p>
+        <div className="mt-4 grid gap-4 md:grid-cols-4">
+          <div>
+            <p className="text-sm text-slate-300">Role</p>
+            <p className="mt-2 text-xl font-semibold">{session.user.role}</p>
+          </div>
+          <div>
+            <p className="text-sm text-slate-300">Profile completed</p>
+            <p className="mt-2 text-xl font-semibold">{session.user.profileCompleted ? "Yes" : "No"}</p>
+          </div>
+          <div>
+            <p className="text-sm text-slate-300">Onboarding</p>
+            <p className="mt-2 text-xl font-semibold">{session.user.onboardingStatus}</p>
+          </div>
+          <div>
+            <p className="text-sm text-slate-300">User ID</p>
+            <p className="mt-2 break-all text-sm text-slate-100">{session.user.id}</p>
+          </div>
+        </div>
       </section>
     </main>
   );
