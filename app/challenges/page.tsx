@@ -71,10 +71,9 @@ export default async function ChallengesPage({
       <div className="flex flex-wrap items-end justify-between gap-6">
         <div className="space-y-3">
           <p className="eyebrow">Challenges</p>
-          <h1 className="text-4xl md:text-5xl">Working submission flow with leaderboard impact.</h1>
+          <h1 className="text-4xl md:text-5xl">Pick a challenge and submit your work.</h1>
           <p className="max-w-3xl">
-            Members can submit GitHub and live links, trigger duplicate prevention, and immediately affect the demo
-            leaderboard. This is the core story reviewers usually look for.
+            Add your GitHub repo and live link, avoid duplicates, and move up the leaderboard.
           </p>
         </div>
         <div className="surface px-5 py-4">
@@ -151,7 +150,7 @@ export default async function ChallengesPage({
         </div>
 
         <aside className="surface p-6">
-          <p className="eyebrow">Leaderboard preview</p>
+          <p className="eyebrow">Leaderboard</p>
           <h2 className="mt-3 text-2xl">Top members</h2>
           <div className="mt-6 space-y-4">
             {leaderboard.slice(0, 5).map((entry: LeaderboardEntry, index: number) => (

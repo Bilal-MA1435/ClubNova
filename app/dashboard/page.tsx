@@ -32,8 +32,7 @@ export default async function DashboardPage() {
           <p className="eyebrow">Dashboard</p>
           <h1 className="text-4xl md:text-5xl">Welcome back, {session.user.name ?? "member"}.</h1>
           <p className="max-w-2xl">
-            Your member space now reflects real submission history, challenge availability, and leaderboard position
-            from the local demo dataset.
+            Check your progress, review recent submissions, and jump into the next open challenge.
           </p>
         </div>
 
@@ -99,7 +98,7 @@ export default async function DashboardPage() {
 
         <article className="surface p-6">
           <p className="eyebrow">Focus queue</p>
-          <h3 className="mt-2">Open challenge opportunities</h3>
+          <h3 className="mt-2">Open now</h3>
           <div className="mt-5 space-y-4">
             {data.challenges.map((challenge) => (
               <div key={challenge.id} className="rounded-md border border-line/60 px-4 py-4">
@@ -129,7 +128,7 @@ export default async function DashboardPage() {
       </section>
 
       <section className="mt-10 rounded-lg border border-line/70 bg-slate-950 px-6 py-8 text-white">
-        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-teal-300">Account state</p>
+        <p className="text-sm font-semibold uppercase tracking-[0.16em] text-teal-300">Account</p>
         <div className="mt-4 grid gap-4 md:grid-cols-4">
           <div>
             <p className="text-sm text-slate-300">Role</p>

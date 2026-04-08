@@ -25,8 +25,7 @@ export default async function AdminPage() {
         <p className="eyebrow">Admin</p>
         <h1 className="text-4xl md:text-5xl">Admin control center</h1>
         <p className="max-w-2xl">
-          This route is protected by middleware and session role checks. It now includes a usable overview of members,
-          submissions, challenge activity, and leaderboard momentum for your demo.
+          Review activity, watch challenge health, and keep the club running from one screen.
         </p>
       </div>
 
@@ -82,7 +81,7 @@ export default async function AdminPage() {
 
         <article className="surface p-6">
           <p className="eyebrow">Operations</p>
-          <h2 className="mt-2 text-2xl">Leaderboard and challenge health</h2>
+          <h2 className="mt-2 text-2xl">Club activity</h2>
           <div className="mt-6 space-y-4">
             {overview.leaderboard.slice(0, 5).map((entry, index) => (
               <div key={entry.user.id} className="rounded-md border border-line/60 px-4 py-4">
