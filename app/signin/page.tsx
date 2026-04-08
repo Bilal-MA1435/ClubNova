@@ -15,6 +15,19 @@ async function signInWithProvider(formData: FormData) {
   await signIn(provider, { redirectTo: "/dashboard" });
 }
 
+async function signInWithDemo(formData: FormData) {
+  "use server";
+
+  const email = String(formData.get("email") ?? "");
+  const password = String(formData.get("password") ?? "");
+
+  await signIn("credentials", {
+    email,
+    password,
+    redirectTo: email.includes("admin") ? "/admin" : "/dashboard"
+  });
+}
+
 export default async function SignInPage() {
   const session = await auth();
 
@@ -65,10 +78,30 @@ export default async function SignInPage() {
             </form>
           </div>
 
+          <div className="rounded-md border border-dashed border-line/70 p-4">
+            <p className="text-sm font-semibold text-slate-900">Submission-safe demo access</p>
+            <p className="mt-2 text-sm">
+              If OAuth keys are not configured yet, use the local demo accounts below so the protected routes still work
+              during review.
+            </p>
+            <div className="mt-4 grid gap-3 sm:grid-cols-2">
+              <form action={signInWithDemo}>
+                <input type="hidden" name="email" value="admin@clubhub.dev" />
+                <input type="hidden" name="password" value="clubhub-admin" />
+                <ProviderButton label="Demo Admin" />
+              </form>
+              <form action={signInWithDemo}>
+                <input type="hidden" name="email" value="member@clubhub.dev" />
+                <input type="hidden" name="password" value="clubhub-member" />
+                <ProviderButton label="Demo Member" />
+              </form>
+            </div>
+          </div>
+
           <div className="rounded-md border border-line/70 bg-panelAlt/70 p-4">
             <p className="text-sm">
-              After sign-in, every user gets a database-backed record with role, onboarding state, and profile flags,
-              which makes the dashboard and admin routes straightforward to enforce.
+              After sign-in, every user gets a database-backed record with role, onboarding state, and profile flags.
+              Google and GitHub are production providers. Demo access exists so local review works immediately.
             </p>
           </div>
 
