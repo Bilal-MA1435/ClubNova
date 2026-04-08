@@ -26,8 +26,40 @@ model User {
   onboardingStatus String    @default("pending")
   accounts         Account[]
   sessions         Session[]
+  submissions      Submission[]
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
+}
+
+model Challenge {
+  id          String       @id @default(cuid())
+  title       String
+  slug        String       @unique
+  description String
+  category    String
+  difficulty  String
+  deadline    DateTime
+  points      Int
+  status      String       @default("Open")
+  tags        String
+  submissions Submission[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Submission {
+  id          String    @id @default(cuid())
+  githubUrl   String    @unique
+  liveUrl     String    @unique
+  status      String    @default("Pending")
+  score       Int       @default(0)
+  feedback    String?
+  challengeId String
+  userId      String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  challenge   Challenge @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Account {
